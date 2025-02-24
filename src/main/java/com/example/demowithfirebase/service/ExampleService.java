@@ -1,27 +1,30 @@
 package com.example.demowithfirebase.service;
 
-import com.example.demowithfirebase.exception.NotAllowedException;
 import com.example.demowithfirebase.model.CustomerExample;
-import com.example.demowithfirebase.repository.CustomerExampleRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ExampleService {
-    private final CustomerExampleRepository customerExampleRepository;
 
-    public String getList(String email) {
-        //Hämtar användare, om användare inte finns kasta ett fel
-        CustomerExample exampleCustomer = customerExampleRepository.getCustomerExampleByEmail(email)
-                //Kasta eget exception med 403 som sätts i GlobalExceptionHandler
-                .orElseThrow(() -> new NotAllowedException("Not a allowed user. Contact your administrator"));
+    private final List<String> list = List.of("company", "company2");
 
-        if (exampleCustomer.getAdmin()) {
-            //returnera admin stuff
-            return "admin";
+    public String getList() {
+        //Om vi har kommit hit har vi en valid användare i securitycontext.
+        CustomerExample customerExample = (CustomerExample) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        //om vi behöver mera saker än CustomerExample från vår context
+        // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        //Här kan man tänka sig att vi går igenom listan och returnerar det som har med rätt företag att göra
+        for (String name : list) {
+            if (customerExample.getCompany().equalsIgnoreCase(name)) {
+                return name;
+            }
         }
-
-        return "user";
+        return "Det finns inget på detta företag";
     }
 }

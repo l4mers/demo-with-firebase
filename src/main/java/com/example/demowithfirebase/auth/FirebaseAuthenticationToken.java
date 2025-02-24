@@ -1,5 +1,6 @@
 package com.example.demowithfirebase.auth;
 
+import com.example.demowithfirebase.model.CustomerExample;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -8,10 +9,10 @@ import java.util.Collection;
 
 //Token klass
 public class FirebaseAuthenticationToken extends AbstractAuthenticationToken {
-    private final Object principal;
-    private String credentials;
+    private final CustomerExample principal;
+    private final String credentials;
 
-    public FirebaseAuthenticationToken(Object principal, String credentials, Collection<? extends GrantedAuthority> authorities) {
+    public FirebaseAuthenticationToken(CustomerExample principal, String credentials, Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
         this.principal = principal;
         this.credentials = credentials;
@@ -19,18 +20,12 @@ public class FirebaseAuthenticationToken extends AbstractAuthenticationToken {
     }
 
     @Override
-    public Object getCredentials() {
+    public String getCredentials() {
         return credentials;
     }
 
     @Override
-    public Object getPrincipal() {
+    public CustomerExample getPrincipal() {
         return principal;
     }
-
-    @Override
-    public boolean implies(Subject subject) {
-        return super.implies(subject);
-    }
 }
-
