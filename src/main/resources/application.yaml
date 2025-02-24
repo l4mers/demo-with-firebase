@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://dinDatabasUrl/DinDatabas
+    username: username
+    password: password
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update #Denna updaterar databas. "none" = inget. "create" = skapar "validate" = stämmer av
+    properties:
+      hibernate:
+        format_sql: true
