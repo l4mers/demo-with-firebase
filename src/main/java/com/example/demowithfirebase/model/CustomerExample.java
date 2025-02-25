@@ -1,5 +1,6 @@
 package com.example.demowithfirebase.model;
 
+import com.google.cloud.firestore.annotation.DocumentId;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -13,22 +14,11 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "customer_example")
 public class CustomerExample {
-    @Id
-    private Long id;
-    @Column(nullable = false, unique = true)
+    @DocumentId // Från firestore annotations, alternativt kan du sätta manuellt
+    private String id;
+
     private String email;
-    @Column(nullable = false)
     private String company;
-    @Column(nullable = false)
     private Boolean admin;
-
-
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    @Column(name = "last_activity", nullable = false)
-    private LocalDateTime lastActivity;
 }

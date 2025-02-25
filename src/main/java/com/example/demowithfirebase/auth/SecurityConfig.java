@@ -18,15 +18,18 @@ import org.springframework.web.filter.CorsFilter;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final FirebaseTokenFilter firebaseTokenFilter;
+
     @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(new FirebaseTokenFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(firebaseTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth ->{
                     auth
                             //Släpper förbi request mot alla endpoints som börjar med /public
+                            //skriv in dom endpoints som finns för att hämta list och token för list
                             .requestMatchers("/public/**").permitAll()
                             //Validerar token vid alla andra request
                             .anyRequest().authenticated();

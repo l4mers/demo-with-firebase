@@ -43,7 +43,7 @@ public class FirebaseTokenFilter extends OncePerRequestFilter {
                 //String email = decodedToken.getUid();
 
                 //kolla om användaren finns annars kasta 403 global custom exception
-                CustomerExample exampleCustomer = customerExampleRepository.getCustomerExampleByEmail(email)
+                CustomerExample exampleCustomer = customerExampleRepository.getCustomerByEmail(email)
                         .orElseThrow(() -> new NotAllowedException("Not an allowed user. Contact your administrator"));
 
                 // lista som man kan lägga till andra claims eller roller satta av firebase
